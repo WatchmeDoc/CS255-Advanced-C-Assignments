@@ -1,0 +1,2 @@
+An x86 tutorial that just calculates the sum of all numbers up to a given integer. This assignment focuses on experimentation with gdb
+and learning a few basic assembly x86 commands. Note that this excercise was made in 32-bit linux environment using C-99 gcc.

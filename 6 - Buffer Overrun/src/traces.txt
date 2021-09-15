@@ -1,0 +1,168 @@
+   0x8048aac <readString>:      push   %ebp                         # Store old ebp in stack and allocate space for local variables
+   0x8048aad <readString+1>:    mov    %esp,%ebp            
+   0x8048aaf <readString+3>:    sub    $0x34,%esp
+   0x8048ab2 <readString+6>:    movl   $0x0,-0x4(%ebp)
+   0x8048ab9 <readString+13>:   mov    0x80d4b44,%eax               # while start
+   0x8048abe <readString+18>:   push   %eax                         # Add parameters to stack
+   0x8048abf <readString+19>:   call   0x8050850 <getc>             # fgetc(stdin);
+   0x8048ac4 <readString+24>:   add    $0x4,%esp                    # deallocate parameters from stack
+   0x8048ac7 <readString+27>:   mov    %eax,-0x8(%ebp)              # store returned value in c
+   0x8048aca <readString+30>:   cmpl   $0xffffffff,-0x8(%ebp)       # c == EOF
+   0x8048ace <readString+34>:   je     0x8048ae8 <readString+60>    # if comparison true jump to readString+60 instruction (break;)
+   0x8048ad0 <readString+36>:   cmpl   $0xa,-0x8(%ebp)              # c == '\n'
+   0x8048ad4 <readString+40>:   je     0x8048ae8 <readString+60>    # if comparison true jump to readString+60 instruction (break;)
+   0x8048ad6 <readString+42>:   mov    -0x4(%ebp),%eax              # buf[i] = c;
+   0x8048ad9 <readString+45>:   lea    0x1(%eax),%edx               #
+   0x8048adc <readString+48>:   mov    %edx,-0x4(%ebp)              #
+   0x8048adf <readString+51>:   mov    -0x8(%ebp),%edx              #
+   0x8048ae2 <readString+54>:   mov    %dl,-0x34(%ebp,%eax,1)       # i++;
+   0x8048ae6 <readString+58>:   jmp    0x8048ab9 <readString+13>    # Jump back to while start 
+   0x8048ae8 <readString+60>:   lea    -0x34(%ebp),%edx             # Access buf[i]
+   0x8048aeb <readString+63>:   mov    -0x4(%ebp),%eax              # 
+   0x8048aee <readString+66>:   add    %edx,%eax                    #
+   0x8048af0 <readString+68>:   movb   $0x0,(%eax)                  # buf[i] = 0;
+   0x8048af3 <readString+71>:   movl   $0x0,-0x4(%ebp)              # i = 0;
+   0x8048afa <readString+78>:   jmp    0x8048b15 <readString+105>   # jump to i < BUFSIZE comparison
+   0x8048afc <readString+80>:   mov    -0x4(%ebp),%edx              # s[i] = buf[i]; - forloop start
+   0x8048aff <readString+83>:   mov    0x8(%ebp),%eax
+   0x8048b02 <readString+86>:   add    %eax,%edx
+   0x8048b04 <readString+88>:   lea    -0x34(%ebp),%ecx
+   0x8048b07 <readString+91>:   mov    -0x4(%ebp),%eax
+   0x8048b0a <readString+94>:   add    %ecx,%eax
+   0x8048b0c <readString+96>:   movzbl (%eax),%eax
+   0x8048b0f <readString+99>:   mov    %al,(%edx)
+   0x8048b11 <readString+101>:  addl   $0x1,-0x4(%ebp)              # i++
+   0x8048b15 <readString+105>:  cmpl   $0x2b,-0x4(%ebp)             # i < BUFSIZE
+   0x8048b19 <readString+109>:  jle    0x8048afc <readString+80>    # if comparison true jump back to forloop start
+   0x8048b1b <readString+111>:  nop
+   0x8048b1c <readString+112>:  leave                               # return
+   0x8048b1d <readString+113>:  ret
+   0x8048b1e <main>:    push   %ebp                                 # store old ebp in stack
+   0x8048b1f <main+1>:  mov    %esp,%ebp                            # add parameters mprotect's parameters in stack
+   0x8048b21 <main+3>:  mov    $0x80d65e0,%eax
+   0x8048b26 <main+8>:  and    $0xfffff000,%eax
+   0x8048b2b <main+13>: push   $0x7
+   0x8048b2d <main+15>: push   $0x1
+   0x8048b2f <main+17>: push   %eax
+   0x8048b30 <main+18>: call   0x805e180 <mprotect>                 # call mprotect
+   0x8048b35 <main+23>: add    $0xc,%esp                            # remove mprotect's parameters from stack
+   0x8048b38 <main+26>: push   $0x80ab0a8                           # add printf's parameters in stack
+   0x8048b3d <main+31>: call   0x804f070 <puts>                     # call printf
+   0x8048b42 <main+36>: add    $0x4,%esp                            # remove printf's parameters from stack
+   0x8048b45 <main+39>: push   $0x80d65e0                           # add readString's parameters in stack
+   0x8048b4a <main+44>: call   0x8048aac <readString>               # call readString
+   0x8048b4f <main+49>: add    $0x4,%esp                            # remove readString's parameters from stack
+   0x8048b52 <main+52>: push   $0x80ab0bb                           # add strcmp's paramaters in stack
+   0x8048b57 <main+57>: push   $0x80d65e0
+   0x8048b5c <main+62>: call   0x805af90 <strcmp>                   # call strcmp
+   0x8048b61 <main+67>: add    $0x8,%esp                            # remove strcmp's parameters from stack
+   0x8048b64 <main+70>: test   %eax,%eax                            
+   0x8048b66 <main+72>: jne    0x8048b6f <main+81>                  # if not equal 0 do not execute grade = '6'
+   0x8048b68 <main+74>: movb   $0x36,0x80d46e8                      # grade = '6'
+   0x8048b6f <main+81>: push   $0x80d65e0                           # add printf's parameters in stack
+   0x8048b74 <main+86>: push   $0x80ab0c9
+   0x8048b79 <main+91>: call   0x804eaf0 <printf>                   # call printf
+   0x8048b7e <main+96>: add    $0x8,%esp                            # remove printf's parameters from stack
+   0x8048b81 <main+99>: movzbl 0x80d46e8,%eax
+   0x8048b88 <main+106>:        movsbl %al,%eax                     
+   0x8048b8b <main+109>:        push   %eax                         # add printf's parameters in stack
+   0x8048b8c <main+110>:        push   $0x80ab0dc
+   0x8048b91 <main+115>:        call   0x804eaf0 <printf>           # call printf
+   0x8048b96 <main+120>:        add    $0x8,%esp                    # remove printf's parameters in stack
+   0x8048b99 <main+123>:        push   $0x0                         # add exit's parameter in stack
+   0x8048b9b <main+125>:        call   0x804e110 <exit>             # call exit
+   0x8048ba0 <__libc_start_main>:       push   %ebp             
+   0x8048ba1 <__libc_start_main+1>:     mov    $0x0,%eax
+   0x8048ba6 <__libc_start_main+6>:     push   %edi
+   0x8048ba7 <__libc_start_main+7>:     push   %esi
+   0x8048ba8 <__libc_start_main+8>:     push   %ebx
+   0x8048ba9 <__libc_start_main+9>:     sub    $0x4c,%esp
+   
+   
+ 
+   print &grade -> $1 = 0x80d46e8 <grade> "3"
+   print grade  -> $2 = 51 '3'
+   
+   Data section:
+   0x80d46e8 (grade) | '3' |
+   -------------------------------------------
+   print &Name  -> $3 = (char (*)[44]) 0x80d65e0 <Name>
+   
+   bss section:
+   0x80d65e0 (Name) |  Name[0]  |
+   0x80d65e1        |  Name[1]  |
+   0x80d65e2        |  Name[2]  |
+   ...
+   0x80d6609        |  Name[41] |
+   0x80d660a        |  Name[42] |
+   0x80d660b        |  Name[43] |
+   
+   
+   print $esp -> $4 = (void *) 0xbffff4f8
+   print $ebp -> $5 = (void *) 0xbffff52c
+   
+Executing x/64b $esp    
+0xbffff4f8:     0x47   (esp) (buf[0])
+0xbffff4f9:     0x65
+0xbffff4fa:     0x6f
+0xbffff4fb:     0x72
+0xbffff4fc:     0x67
+0xbffff4fd:     0x65
+0xbffff4fe:     0x0a
+0xbffff4ff:     0x08
+0xbffff500:     0x7f
+0xbffff501:     0xf1
+0xbffff502:     0x04
+0xbffff503:     0x08
+0xbffff504:     0x80
+0xbffff505:     0x48 
+0xbffff506:     0x0d
+0xbffff507:     0x08
+0xbffff508:     0x0a 
+0xbffff509:     0x00 
+0xbffff50a:     0x00 
+0xbffff50b:     0x00 
+0xbffff50c:     0x12
+0xbffff50d:     0x00 
+0xbffff50e:     0x00 
+0xbffff50f:     0x00 
+0xbffff510:     0x01 
+0xbffff511:     0x00
+0xbffff512:     0x00
+0xbffff513:     0x00
+0xbffff514:     0xc4
+0xbffff515:     0xf5
+0xbffff516:     0xff
+0xbffff517:     0xbf
+0xbffff518:     0xcc
+0xbffff519:     0xf5
+0xbffff51a:     0xff
+0xbffff51b:     0xbf
+0xbffff51c:     0x01
+0xbffff51d:     0x00
+0xbffff51e:     0x00
+0xbffff51f:     0x00
+0xbffff520:     0x34                            
+0xbffff521:     0x80
+0xbffff522:     0x04
+0xbffff523:     0x08    (buf[43])
+0xbffff524:     0x0a    (int c variable)
+0xbffff525:     0x00    
+0xbffff526:     0x00
+0xbffff527:     0x00
+0xbffff528:     0x06    (int i variable -  4 bytes)            
+0xbffff529:     0x00
+0xbffff52a:     0x00
+0xbffff52b:     0x00    
+0xbffff52c:     0x38    (ebp) (old ebp location - 4 bytes)
+0xbffff52d:     0xf5    
+0xbffff52e:     0xff
+0xbffff52f:     0xbf
+0xbffff530:     0x4f    (return address - 4 bytes)
+0xbffff531:     0x8b        
+0xbffff532:     0x04
+0xbffff533:     0x08
+0xbffff534:     0xe0    (*s parameter - 4 bytes) 
+0xbffff535:     0x65
+0xbffff536:     0x0d
+0xbffff537:     0x08
